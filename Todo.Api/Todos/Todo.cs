@@ -18,6 +18,7 @@ public class ScheduleItem
     public int Id { get; set; }
     [Required]
     public string Group { get; set; } = default!;
+    public string Date { get; set; } = default!;
     public int FirstLesson { get; set; } = 1;
     public List<List<LessonItem>> LessonsByDays { get; set; } = default!;
 }
