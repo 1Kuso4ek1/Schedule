@@ -58,7 +58,7 @@ internal static class ScheduleApi
 
             var rowsAffected = await db.Schedule.Where(t => t.Id == id && (t.OwnerId == owner.Id || owner.IsAdmin))
                                              .ExecuteUpdateAsync(updates =>
-                                                updates.SetProperty(t => t.LessonsByDays, schedule.LessonsByDays)
+                                                updates.SetProperty(t => t.Days, schedule.Days)
                                                        .SetProperty(t => t.Group, schedule.Group));
 
             return rowsAffected == 0 ? TypedResults.NotFound() : TypedResults.Ok();

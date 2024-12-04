@@ -20,7 +20,7 @@ builder.Services.AddIdentityCore<ScheduleUser>()
                 .AddApiEndpoints();
 
 // Configure the database
-var connectionString = builder.Configuration.GetConnectionString("Todos") ?? "Data Source=.db/Todos.db";
+var connectionString = builder.Configuration.GetConnectionString("Schedule") ?? "Data Source=.db/Schedule.db";
 builder.Services.AddSqlite<ScheduleDbContext>(connectionString);
 
 // State that represents the current user from the database *and* the request
