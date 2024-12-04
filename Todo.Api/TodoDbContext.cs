@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi;
 
-public class TodoDbContext(DbContextOptions<TodoDbContext> options) : IdentityDbContext<TodoUser>(options)
+public class ScheduleDbContext(DbContextOptions<ScheduleDbContext> options) : IdentityDbContext<ScheduleUser>(options)
 {
-    public DbSet<Todo> Todos => Set<Todo>();
+    public DbSet<Schedule> Schedule => Set<Schedule>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Todo>()
-               .HasOne<TodoUser>()
+        builder.Entity<Schedule>()
+               .HasOne<ScheduleUser>()
                .WithMany()
                .HasForeignKey(t => t.OwnerId)
                .HasPrincipalKey(u => u.Id);

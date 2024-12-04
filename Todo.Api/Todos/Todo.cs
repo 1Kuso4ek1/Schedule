@@ -1,34 +1,45 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public class Todo
+public class Schedule
 {
     public int Id { get; set; }
     [Required]
-    public string Title { get; set; } = default!;
-    public bool IsComplete { get; set; }
+    public string Group { get; set; } = default!;
+    public int FirstLesson { get; set; } = 1;
+    public List<List<LessonItem>> LessonsByDays { get; set; } = default!;
 
     [Required]
     public string OwnerId { get; set; } = default!;
 }
 
 // The DTO that excludes the OwnerId (we don't want that exposed to clients)
-public class TodoItem
+public class ScheduleItem
 {
     public int Id { get; set; }
     [Required]
-    public string Title { get; set; } = default!;
-    public bool IsComplete { get; set; }
+    public string Group { get; set; } = default!;
+    public int FirstLesson { get; set; } = 1;
+    public List<List<LessonItem>> LessonsByDays { get; set; } = default!;
 }
 
-public static class TodoMappingExtensions
+public class LessonItem
 {
-    public static TodoItem AsTodoItem(this Todo todo)
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; } = default!;
+    [Required]
+    public string Teacher { get; set; } = default!;
+}
+
+public static class ScheduleMappingExtensions
+{
+    public static ScheduleItem AsScheduleItem(this Schedule schedule)
     {
         return new()
         {
-            Id = todo.Id,
-            Title = todo.Title,
-            IsComplete = todo.IsComplete,
+            Id = schedule.Id,
+            Group = schedule.Group,
+            LessonsByDays = schedule.LessonsByDays
         };
     }
 }

@@ -139,7 +139,7 @@ public class UserApiTests
         Assert.True(response.IsSuccessStatusCode);
 
         using var scope = application.Services.CreateScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<TodoUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ScheduleUser>>();
         var user = await userManager.FindByLoginAsync("Google", "1003");
         Assert.NotNull(user);
         Assert.Equal("todouser", user.UserName);

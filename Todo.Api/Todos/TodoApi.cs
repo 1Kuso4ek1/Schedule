@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TodoApi;
 
-internal static class TodoApi
+internal static class ScheduleApi
 {
-    public static RouteGroupBuilder MapTodos(this IEndpointRouteBuilder routes)
+    public static RouteGroupBuilder MapSchedule(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/todos");
+        var group = routes.MapGroup("/schedule");
 
-        group.WithTags("Todos");
+        group.WithTags("Schedule");
 
         // Add security requirements, all incoming requests to this API *must*
         // be authenticated with a valid user.
@@ -19,54 +19,54 @@ internal static class TodoApi
         group.RequirePerUserRateLimit();
 
         // Validate the parameters
-        group.WithParameterValidation(typeof(TodoItem));
+        group.WithParameterValidation(typeof(ScheduleItem));
 
-        group.MapGet("/", async (TodoDbContext db, CurrentUser owner) =>
+        group.MapGet("/", async (ScheduleDbContext db, CurrentUser owner) =>
         {
-            return await db.Todos.Where(todo => todo.OwnerId == owner.Id).Select(t => t.AsTodoItem()).AsNoTracking().ToListAsync();
+            return await db.Schedule.Where(todo => todo.OwnerId == owner.Id).Select(t => t.AsScheduleItem()).AsNoTracking().ToListAsync();
         });
 
-        group.MapGet("/{id}", async Task<Results<Ok<TodoItem>, NotFound>> (TodoDbContext db, int id, CurrentUser owner) =>
+        group.MapGet("/{id}", async Task<Results<Ok<ScheduleItem>, NotFound>> (ScheduleDbContext db, int id, CurrentUser owner) =>
         {
-            return await db.Todos.FindAsync(id) switch
+            return await db.Schedule.FindAsync(id) switch
             {
-                Todo todo when todo.OwnerId == owner.Id || owner.IsAdmin => TypedResults.Ok(todo.AsTodoItem()),
+                Schedule todo when todo.OwnerId == owner.Id || owner.IsAdmin => TypedResults.Ok(todo.AsScheduleItem()),
                 _ => TypedResults.NotFound()
             };
         });
 
-        group.MapPost("/", async Task<Created<TodoItem>> (TodoDbContext db, TodoItem newTodo, CurrentUser owner) =>
+        group.MapPost("/", async Task<Created<ScheduleItem>> (ScheduleDbContext db, ScheduleItem newSchedule, CurrentUser owner) =>
         {
-            var todo = new Todo
+            var schedule = new Schedule
             {
-                Title = newTodo.Title,
+                Group = newSchedule.Group,
                 OwnerId = owner.Id
             };
 
-            db.Todos.Add(todo);
+            db.Schedule.Add(schedule);
             await db.SaveChangesAsync();
 
-            return TypedResults.Created($"/todos/{todo.Id}", todo.AsTodoItem());
+            return TypedResults.Created($"/schedule/{schedule.Id}", schedule.AsScheduleItem());
         });
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound, BadRequest>> (TodoDbContext db, int id, TodoItem todo, CurrentUser owner) =>
+        group.MapPut("/{id}", async Task<Results<Ok, NotFound, BadRequest>> (ScheduleDbContext db, int id, ScheduleItem schedule, CurrentUser owner) =>
         {
-            if (id != todo.Id)
+            if (id != schedule.Id)
             {
                 return TypedResults.BadRequest();
             }
 
-            var rowsAffected = await db.Todos.Where(t => t.Id == id && (t.OwnerId == owner.Id || owner.IsAdmin))
+            var rowsAffected = await db.Schedule.Where(t => t.Id == id && (t.OwnerId == owner.Id || owner.IsAdmin))
                                              .ExecuteUpdateAsync(updates =>
-                                                updates.SetProperty(t => t.IsComplete, todo.IsComplete)
-                                                       .SetProperty(t => t.Title, todo.Title));
+                                                updates.SetProperty(t => t.LessonsByDays, schedule.LessonsByDays)
+                                                       .SetProperty(t => t.Group, schedule.Group));
 
             return rowsAffected == 0 ? TypedResults.NotFound() : TypedResults.Ok();
         });
 
-        group.MapDelete("/{id}", async Task<Results<NotFound, Ok>> (TodoDbContext db, int id, CurrentUser owner) =>
+        group.MapDelete("/{id}", async Task<Results<NotFound, Ok>> (ScheduleDbContext db, int id, CurrentUser owner) =>
         {
-            var rowsAffected = await db.Todos.Where(t => t.Id == id && (t.OwnerId == owner.Id || owner.IsAdmin))
+            var rowsAffected = await db.Schedule.Where(t => t.Id == id && (t.OwnerId == owner.Id || owner.IsAdmin))
                                              .ExecuteDeleteAsync();
 
             return rowsAffected == 0 ? TypedResults.NotFound() : TypedResults.Ok();

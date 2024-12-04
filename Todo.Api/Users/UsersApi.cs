@@ -17,11 +17,11 @@ public static class UsersApi
 
         group.WithParameterValidation(typeof(ExternalUserInfo));
 
-        group.MapIdentityApi<TodoUser>();
+        group.MapIdentityApi<ScheduleUser>();
 
         // The MapIdentityApi<T> doesn't expose an external login endpoint so we write this custom endpoint that follows
         // a similar pattern
-        group.MapPost("/token/{provider}", async Task<Results<Ok<AccessTokenResponse>, SignInHttpResult, ValidationProblem>> (string provider, ExternalUserInfo userInfo, UserManager<TodoUser> userManager, SignInManager<TodoUser> signInManager, IDataProtectionProvider dataProtectionProvider) =>
+        group.MapPost("/token/{provider}", async Task<Results<Ok<AccessTokenResponse>, SignInHttpResult, ValidationProblem>> (string provider, ExternalUserInfo userInfo, UserManager<ScheduleUser> userManager, SignInManager<ScheduleUser> signInManager, IDataProtectionProvider dataProtectionProvider) =>
         {
             var protector = dataProtectionProvider.CreateProtector(provider);
 
@@ -33,7 +33,7 @@ public static class UsersApi
 
             if (user is null)
             {
-                user = new TodoUser() { UserName = userInfo.Username };
+                user = new ScheduleUser() { UserName = userInfo.Username };
 
                 result = await userManager.CreateAsync(user);
 

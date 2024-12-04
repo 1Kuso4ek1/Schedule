@@ -10,7 +10,7 @@ using TodoApi;
 
 namespace TodoApi.Migrations
 {
-    [DbContext(typeof(TodoDbContext))]
+    [DbContext(typeof(ScheduleDbContext))]
     [Migration("20221123071234_Initial")]
     partial class Initial
     {
@@ -172,7 +172,7 @@ namespace TodoApi.Migrations
                     b.ToTable("Todos");
                 });
 
-            modelBuilder.Entity("TodoApi.TodoUser", b =>
+            modelBuilder.Entity("TodoApi.ScheduleUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -251,7 +251,7 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TodoApi.TodoUser", null)
+                    b.HasOne("TodoApi.ScheduleUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -260,7 +260,7 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TodoApi.TodoUser", null)
+                    b.HasOne("TodoApi.ScheduleUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -275,7 +275,7 @@ namespace TodoApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TodoApi.TodoUser", null)
+                    b.HasOne("TodoApi.ScheduleUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,7 +284,7 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("TodoApi.TodoUser", null)
+                    b.HasOne("TodoApi.ScheduleUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -293,7 +293,7 @@ namespace TodoApi.Migrations
 
             modelBuilder.Entity("Todo", b =>
                 {
-                    b.HasOne("TodoApi.TodoUser", null)
+                    b.HasOne("TodoApi.ScheduleUser", null)
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .HasPrincipalKey("UserName")

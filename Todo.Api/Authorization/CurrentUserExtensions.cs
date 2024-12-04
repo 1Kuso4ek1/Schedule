@@ -13,7 +13,7 @@ public static class CurrentUserExtensions
         return services;
     }
 
-    private sealed class ClaimsTransformation(CurrentUser currentUser, UserManager<TodoUser> userManager) : IClaimsTransformation
+    private sealed class ClaimsTransformation(CurrentUser currentUser, UserManager<ScheduleUser> userManager) : IClaimsTransformation
     {
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {

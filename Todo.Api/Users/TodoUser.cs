@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace TodoApi;
 
-// This is our TodoUser, we can modify this if we need
+// This is our ScheduleUser, we can modify this if we need
 // to add custom properties to the user
-public class TodoUser : IdentityUser { }
+public class ScheduleUser : IdentityUser { }
 
 // This is the DTO used to exchange username and password details to 
 // the create user and token endpoints

@@ -8,20 +8,20 @@ builder.AddServiceDefaults();
 
 // Configure data protection, setup the application discriminator
 // so that the data protection keys can be shared between the BFF and this API
-builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "TodoApp");
+builder.Services.AddDataProtection(o => o.ApplicationDiscriminator = "ScheduleApp");
 
 // Configure auth
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder().AddCurrentUserHandler();
 
 // Configure identity
-builder.Services.AddIdentityCore<TodoUser>()
-                .AddEntityFrameworkStores<TodoDbContext>()
+builder.Services.AddIdentityCore<ScheduleUser>()
+                .AddEntityFrameworkStores<ScheduleDbContext>()
                 .AddApiEndpoints();
 
 // Configure the database
 var connectionString = builder.Configuration.GetConnectionString("Todos") ?? "Data Source=.db/Todos.db";
-builder.Services.AddSqlite<TodoDbContext>(connectionString);
+builder.Services.AddSqlite<ScheduleDbContext>(connectionString);
 
 // State that represents the current user from the database *and* the request
 builder.Services.AddCurrentUser();
@@ -62,7 +62,7 @@ app.MapDefaultEndpoints();
 app.Map("/", () => Results.Redirect("/scalar/v1"));
 
 // Configure the APIs
-app.MapTodos();
+app.MapSchedule();
 app.MapUsers();
 
 app.Run();
