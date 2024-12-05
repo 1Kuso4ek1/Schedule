@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageVersion Include="xunit" Version="2.9.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
@@ -30,7 +31,7 @@
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.0.0" />
-	<PackageVersion Include="Scalar.AspNetCore" Version="1.2.37" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="1.2.37" />
   </ItemGroup>
   <!-- OpenTelemetry -->
   <ItemGroup>

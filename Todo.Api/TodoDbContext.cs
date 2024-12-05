@@ -10,7 +10,7 @@ public class ScheduleDbContext(DbContextOptions<ScheduleDbContext> options) : Id
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<Schedule>()
-               .HasOne<ScheduleUser>()
+                .HasOne<ScheduleUser>()
                .WithMany()
                .HasForeignKey(t => t.OwnerId)
                .HasPrincipalKey(u => u.Id);

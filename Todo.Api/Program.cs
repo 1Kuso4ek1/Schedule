@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Scalar.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +21,10 @@ builder.Services.AddIdentityCore<ScheduleUser>()
                 .AddApiEndpoints();
 
 // Configure the database
-var connectionString = builder.Configuration.GetConnectionString("Schedule") ?? "Data Source=.db/Schedule.db";
-builder.Services.AddSqlite<ScheduleDbContext>(connectionString);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddSqlite<ScheduleDbContext>(connectionString);
+builder.Services.AddDbContext<ScheduleDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 // State that represents the current user from the database *and* the request
 builder.Services.AddCurrentUser();
